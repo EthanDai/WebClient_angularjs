@@ -1,0 +1,177 @@
+#player {
+
+}
+
+#player .ctrl {
+
+}
+#player .ctrl .tag strong, #player .ctrl .tag span {
+  display: block;
+  text-overflow: ellipsis;
+}
+#player .ctrl .tag span {
+  font-size: 12px;
+  margin-top: 5px;
+  color: #ccc;
+}
+#player .ctrl .icon {
+  background-repeat: no-repeat;
+  background-position: center;
+  display: inline-block;
+  opacity: 0.6;
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+  -moz-transition: 0.3s;
+  -webkit-transition: 0.3s;
+  -o-transition: 0.3s;
+  transition: 0.3s;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+#player .ctrl .icon:hover, #player .ctrl .icon.enable {
+  opacity: 1;
+}
+#player .ctrl .icon:active {
+  opacity: 0.3;
+}
+#player .ctrl .control {
+  margin-top: 10px;
+  height: 25px;
+}
+#player .ctrl .control .rewind {
+  background-image: url(../img/player/rewind.png);
+}
+#player .ctrl .control .playback {
+  background-image: url(../img/player/play.png);
+}
+#player .ctrl .control .playback.playing {
+  background-image: url(../img/player/pause.png);
+}
+#player .ctrl .control .fastforward {
+  background-image: url(../img/player/fastforward.png);
+}
+#player .ctrl .control .volume .mute {
+  background-image: url(../img/player/volume.png);
+}
+#player .ctrl .control .volume .mute.enable {
+  background-image: url(../img/player/mute.png);
+}
+#player .ctrl .control .volume .slider {
+  margin-top: 11px;
+  margin-left: 10px;
+  width: 100px;
+}
+#player .ctrl .progress {
+  margin-top: 10px;
+}
+#player .ctrl .progress .timer {
+  font-size: 12px;
+  margin-top: 8px;
+}
+#player .ctrl .progress .repeat, #player .ctrl .progress .shuffle {
+  background-position: center bottom;
+}
+#player .ctrl .progress .repeat {
+  background-image: url(../img/player/repeat.png);
+}
+#player .ctrl .progress .repeat.once, #player .ctrl .progress .repeat.all {
+  opacity: 1;
+}
+#player .ctrl .progress .repeat.once {
+  position: relative;
+}
+#player .ctrl .progress .repeat.once:before {
+  content: "1";
+  position: absolute;
+  top: 3px;
+  right: -2px;
+  font-size: 8px;
+}
+#player .ctrl .progress .shuffle {
+  background-image: url(../img/player/shuffle.png);
+}
+
+#playlist {
+  background: rgba(0, 0, 0, 0.5);
+  width: 470px;
+  margin: 0 auto 50px;
+  padding: 10px 15px;
+  list-style: none;
+  position: relative;
+
+}
+#playlist li {
+  color: #aaa;
+  font-size: 12px;
+  line-height: 2;
+  padding-left: 25px;
+  cursor: pointer;
+  text-overflow: ellipsis;
+}
+#playlist li:hover {
+  color: #fff;
+}
+#playlist li.playing {
+  background: url(../img/player/playing.png) no-repeat 0 center;
+  color: #fff;
+  font-weight: bold;
+}
+
+.slider {
+  background: rgba(0, 0, 0, 0.3);
+  height: 5px;
+  position: relative;
+  cursor: pointer;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -o-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -khtml-border-radius: 5px;
+  border-radius: 5px;
+  -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5) inset;
+  -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5) inset;
+  -o-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5) inset;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5) inset;
+}
+.slider:hover a, .slider.enable a {
+  opacity: 1;
+}
+.slider a {
+  background: #fff;
+  margin-left: -2.5px;
+  position: absolute;
+  opacity: 0;
+  width: 5px;
+  height: 5px;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -o-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -khtml-border-radius: 50%;
+  border-radius: 50%;
+  -moz-transition: opacity 0.3s;
+  -webkit-transition: opacity 0.3s;
+  -o-transition: opacity 0.3s;
+  transition: opacity 0.3s;
+}
+.slider .loaded, .slider .pace {
+  position: absolute;
+  height: 100%;
+  opacity: 0.7;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -o-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -khtml-border-radius: 5px;
+  border-radius: 5px;
+}
+.slider .loaded {
+  background: rgba(255, 255, 255, 0.1);
+}
+.slider .pace {
+  background: #258fb8;
+}
