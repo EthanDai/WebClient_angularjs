@@ -1,0 +1,19 @@
+{
+    "album_id":"0002",
+    "tracks": [{
+        "title": "Ground Zero",
+        "url": "music/blue.mp3"
+    },
+    {
+        "title": "Western Sky",
+        "url": "music/jazz.mp3"
+    },
+    {
+        "title": "Monterey Bay",
+        "url": "music/minimalish.mp3"
+    },
+    {
+        "title": "Where the Earth Meets the Sky",
+        "url": "music/slower.mp3"
+    }]
+}
