@@ -161,4 +161,14 @@
           };
      }]);
 
+    WebClientApp.directive('popover', ['player',  function(player) {
+          return {
+            restrict: 'A',
+            link: function(scope, element, attrs) {
+              element.popover();
+            }
+          };
+     }]);    
+    
+
 })(window);
