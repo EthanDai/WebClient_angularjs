@@ -4,7 +4,7 @@
 
     var WebClientApp = angular.module('WebClientApp', ['ui']);
 
-    WebClientApp.controller('WebClientCtrl', ['$scope', '$http', 'player', 'ui_info', function($scope, $http, player, ui_info) {
+    WebClientApp.controller('WebClientCtrl', ['$scope', '$http', 'player', 'ui_info', 'album_info', function($scope, $http, player, ui_info, album_info) {
         
         $http.get('api/get_albums.json').success(function(data) {
           $scope.albums = data;
@@ -12,6 +12,7 @@
         });
         $scope.player = player;
         $scope.ui_info = ui_info;
+        $scope.album_info = album_info;
 
         var updatePlayer = function () {
              $scope.player = player;
@@ -34,15 +35,26 @@
 
     }]);
 
-    WebClientApp.controller('SearchCtrl', ['$scope', '$http', 'player', 'ui_info', function($scope, $http, player, ui_info) {
+    WebClientApp.controller('SearchCtrl', ['$scope', '$http', 'album_info', 'ui_info', function($scope, $http, album_info, ui_info) {
         
-        $http.get('api/search_albums.json').success(function(data) {
+        $http.get('api/search_data.json').success(function(data) {
           $scope.searchAlbums = data;
+           console.log(data);
         });
 
         $scope.showList = function(id){
            ui_info.atPlayList = false;
-           console.log("show album data in id :" + id);
+           for(var i=0; i < $scope.searchAlbums.length; i++){
+
+              if(id == $scope.searchAlbums[i].id){
+                  album_info.title = $scope.searchAlbums[i].title;
+                  album_info.artist = $scope.searchAlbums[i].artist;
+                  album_info.cover = $scope.searchAlbums[i].cover;
+                  album_info.tracks = $scope.searchAlbums[i].tracks;
+
+              }
+           }
+          
             //$('.sliderLink').pageslide({ direction: 'left', href: 'partials/album_list.html'});
         }
 
@@ -62,6 +74,21 @@
         }
 
         return ui_info;
+    });
+
+    WebClientApp.factory('album_info', function($rootScope, $http) {
+        var album_info = {};
+        var tracks = [];
+        var current_func = "playlist";
+
+        album_info = {
+            title : '',
+            artist: '',
+            cover: '',
+            tracks: tracks
+        }
+
+        return album_info;
     });
 
     WebClientApp.factory('player', function($rootScope, $http) {
@@ -211,15 +238,24 @@
             link: function(scope, element, attrs) {
 
                 $http.get(attrs.url).success(function(data) {
-                                       
+                    
+                    // 將html compule 為 angularjs 能解析的 樣板                   
                     var templateData = $compile(data)(scope);
+                    console.log(templateData);
                     element.popover({
-                      html : true,
-                      content: templateData,
-                      placement: attrs.placement                
+                      content: templateData
+                    });
+
+
+                    element.click(function(event) {
+                      event.preventDefault();
+                      event.stopPropagation();
+                      element.popover('show');
                     });
 
                 });
+
+                
             }
           };
      }]);    

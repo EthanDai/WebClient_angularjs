@@ -1,0 +1,292 @@
+[{
+    "id":"0001",
+    "title": "may i",
+    "artist": "star-01",
+    "cover": "cover/kkbox_cover.jpg",
+    "tracks": [{
+        "title": "Care",
+        "url": "music/blue.mp3"
+    },
+    {
+        "title": "Rope and Wood",
+        "url": "music/jazz.mp3"
+    },
+    {
+        "title": "Problem Solvent",
+        "url": "music/minimalish.mp3"
+    },
+    {
+        "title": "Unpaint My Skin",
+        "url": "music/slower.mp3"
+    }]    
+},
+{
+    "id":"0002",
+    "title": "color rad",
+    "artist": "star-02",
+    "cover": "cover/bootstrap-cover.png",
+    "tracks": [{
+        "title": "Care",
+        "url": "music/blue.mp3"
+    },
+    {
+        "title": "Rope and Wood",
+        "url": "music/jazz.mp3"
+    },
+    {
+        "title": "Problem Solvent",
+        "url": "music/minimalish.mp3"
+    },
+    {
+        "title": "Unpaint My Skin",
+        "url": "music/slower.mp3"
+    },
+    {
+        "title": "Nostalgia",
+        "url": "music/blue.mp3"
+    },
+    {
+        "title": "Interludum",
+        "url": "music/jazz.mp3"
+    },
+    {
+        "title": "Grind",
+        "url": "music/minimalish.mp3"
+    }]     
+},
+{
+    "id":"0003",
+    "title": "weather",
+    "artist": "star-03",
+    "cover": "cover/kkbox_cover.jpg",
+    "tracks": [{
+        "title": "Care",
+        "url": "music/blue.mp3"
+    }]     
+},
+{
+    "id":"0004",
+    "title": "mood",
+    "artist": "star-01",
+    "cover": "cover/bootstrap.jpg",
+    "tracks": [{
+        "title": "Care",
+        "url": "music/blue.mp3"
+    },
+    {
+        "title": "Rope and Wood",
+        "url": "music/jazz.mp3"
+    },
+    {
+        "title": "Problem Solvent",
+        "url": "music/minimalish.mp3"
+    }]     
+},
+{
+    "id":"0005",
+    "title": "kingdom",
+    "artist": "star-02",
+    "cover": "cover/kkbox_cover.jpg",
+    "tracks": [{
+        "title": "Care",
+        "url": "music/blue.mp3"
+    },
+    {
+        "title": "Rope and Wood",
+        "url": "music/jazz.mp3"
+    },
+    {
+        "title": "Problem Solvent",
+        "url": "music/minimalish.mp3"
+    },
+    {
+        "title": "Unpaint My Skin",
+        "url": "music/slower.mp3"
+    },
+    {
+        "title": "Nostalgia",
+        "url": "music/blue.mp3"
+    },
+    {
+        "title": "Tunnel At The End Of Light",
+        "url": "music/minimalish.mp3"
+    }]     
+},
+{
+    "id":"0006",
+    "title": "may",
+    "artist": "star-03",
+    "cover": "cover/bootstrap.jpg",
+    "tracks": [{
+        "title": "Care",
+        "url": "music/blue.mp3"
+    },
+    {
+        "title": "Nostalgia",
+        "url": "music/blue.mp3"
+    },
+    {
+        "title": "Interludum",
+        "url": "music/jazz.mp3"
+    },
+    {
+        "title": "Grind",
+        "url": "music/minimalish.mp3"
+    },
+    {
+        "title": "Diagrams",
+        "url": "music/slower.mp3"
+    },
+    {
+        "title": "Hare",
+        "url": "music/blue.mp3"
+    },
+    {
+        "title": "Carefree",
+        "url": "music/jazz.mp3"
+    },
+    {
+        "title": "Tunnel At The End Of Light",
+        "url": "music/minimalish.mp3"
+    }]     
+},
+{
+    "id":"0007",
+    "title": "sunset",
+    "artist": "star-01",
+    "cover": "cover/kkbox_cover.jpg",
+    "tracks": [{
+        "title": "Problem Solvent",
+        "url": "music/minimalish.mp3"
+    },
+    {
+        "title": "Unpaint My Skin",
+        "url": "music/slower.mp3"
+    },
+    {
+        "title": "Nostalgia",
+        "url": "music/blue.mp3"
+    },
+    {
+        "title": "Interludum",
+        "url": "music/jazz.mp3"
+    },
+    {
+        "title": "Grind",
+        "url": "music/minimalish.mp3"
+    },
+    {
+        "title": "Diagrams",
+        "url": "music/slower.mp3"
+    },
+    {
+        "title": "Hare",
+        "url": "music/blue.mp3"
+    },
+    {
+        "title": "Carefree",
+        "url": "music/jazz.mp3"
+    },
+    {
+        "title": "Tunnel At The End Of Light",
+        "url": "music/minimalish.mp3"
+    }]     
+},
+{
+    "id":"0008",
+    "title": "dex",
+    "artist": "star-02",
+    "cover": "cover/bootstrap.jpg",
+    "tracks": [{
+        "title": "Care",
+        "url": "music/blue.mp3"
+    },
+    {
+        "title": "Rope and Wood",
+        "url": "music/jazz.mp3"
+    },
+    {
+        "title": "Problem Solvent",
+        "url": "music/minimalish.mp3"
+    },
+    {
+        "title": "Unpaint My Skin",
+        "url": "music/slower.mp3"
+    },
+    {
+        "title": "Nostalgia",
+        "url": "music/blue.mp3"
+    },
+    {
+        "title": "Interludum",
+        "url": "music/jazz.mp3"
+    },
+    {
+        "title": "Grind",
+        "url": "music/minimalish.mp3"
+    },
+    {
+        "title": "Diagrams",
+        "url": "music/slower.mp3"
+    },
+    {
+        "title": "Hare",
+        "url": "music/blue.mp3"
+    },
+    {
+        "title": "Carefree",
+        "url": "music/jazz.mp3"
+    },
+    {
+        "title": "Tunnel At The End Of Light",
+        "url": "music/minimalish.mp3"
+    }]     
+},
+{
+    "id":"0009",
+    "title": "kkmart",
+    "artist": "star-03",
+    "cover": "cover/kkbox_cover.jpg",
+    "tracks": [{
+        "title": "Care",
+        "url": "music/blue.mp3"
+    },
+    {
+        "title": "Rope and Wood",
+        "url": "music/jazz.mp3"
+    },
+    {
+        "title": "Problem Solvent",
+        "url": "music/minimalish.mp3"
+    },
+    {
+        "title": "Unpaint My Skin",
+        "url": "music/slower.mp3"
+    },
+    {
+        "title": "Hare",
+        "url": "music/blue.mp3"
+    },
+    {
+        "title": "Carefree",
+        "url": "music/jazz.mp3"
+    }]     
+},
+{
+    "id":"0010",
+    "title": "ddlike",
+    "artist": "star-01",
+    "cover": "cover/bootstrap.jpg",
+    "tracks": [{
+        "title": "Care",
+        "url": "music/blue.mp3"
+    },
+    {
+        "title": "Rope and Wood",
+        "url": "music/jazz.mp3"
+    },
+    {
+        "title": "Tunnel At The End Of Light",
+        "url": "music/minimalish.mp3"
+    }]     
+}]

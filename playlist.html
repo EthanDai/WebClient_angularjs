@@ -61,7 +61,7 @@
               <a ng-class="{btn : true, active : ui_info.current_func == 'playlist'}" href="Javascript:" ng-click="switchFunc('playlist')"><i class="icon-music"></i>歌單</a>
             </li>
             <li>
-               <a ng-class="{btn : true, active : ui_info.current_func == 'search'}" href="Javascript:" data-placement="bottom" data-url="partials/search.html" ng-click="switchFunc('search')"  popover><i class="icon-search"></i>搜尋</a>
+               <a ng-class="{btn : true, active : ui_info.current_func == 'search'}" href="Javascript:"  data-url="partials/search.html" ng-click="switchFunc('search')"  popover><i class="icon-search"></i>搜尋</a>
             </li>
             <!--<li><a href="#">個人設定</a></li>-->
           </ul>
@@ -130,11 +130,10 @@
         <div class="span10" ng-hide="ui_info.atPlayList">
               <div class="row-fluid">
                   <div class="span2">
-                    <img ng-src="{{player.playlist[0].cover}}" class="img-rounded">
+                    <img ng-src="{{album_info.cover}}" class="img-rounded">
                   </div>
                   <div class="span9 hero-unit">
-                    <h3 ng-bind="player.playlist[0].tracks[player.current.track].title"></h1>
-                    <p ng-bind-html-unsafe="player.notice"></p>
+                    <h3 ng-bind="album_info.title"></h1>
                   </div>
               </div>
 
@@ -148,7 +147,7 @@
                       </tr>
                     </thead>
                     <tbody ui:sortable>
-                      <tr ng-repeat="track in player.playlist[0].tracks" ng-dblclick="player.play($index)" ng-class="{success: player.current.track == $index}">
+                      <tr ng-repeat="track in album_info.tracks">
                         <td ng-bind="$index+1"></td>
                         <td ng-bind="track.title"></td>
                       </tr>                              
@@ -227,7 +226,7 @@
     <script src="assets/js/jquery.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.js"></script>
     <script src="assets/js/jplayer/jquery.jplayer.min.js"></script>
-    <script src="assets/js/jquery.pageslide.js"></script>
+    <script src="assets/js/jquery.popover-1.1.2.js"></script>
    
 
     <!--
@@ -237,8 +236,8 @@
     <script src="assets/js/bootstrap-dropdown.js"></script>
     <script src="assets/js/bootstrap-scrollspy.js"></script>
     <script src="assets/js/bootstrap-tab.js"></script>
-    
-    
+   <script src="assets/js/bootstrap-tooltip.js"></script>
+    <script src="assets/js/bootstrap-popover.js"></script>   
     <script src="assets/js/bootstrap-button.js"></script>
     <script src="assets/js/bootstrap-collapse.js"></script>
     <script src="assets/js/bootstrap-carousel.js"></script>
@@ -247,8 +246,7 @@
 
     <script src="assets/js/angular.js"></script>
     <script src="assets/js/angular-ui.js"></script>
-    <script src="assets/js/bootstrap-tooltip.js"></script>
-    <script src="assets/js/bootstrap-popover.js"></script>
+
 
     <script src="assets/js/wc.js"></script>
     
