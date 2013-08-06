@@ -10,7 +10,16 @@
 
       // 讀取預設使用者播放清單
       $http.get('api/get_playlist.json').success(function(data) {
-        user_info.playlist = data;
+        for(var i=0; i<data.length; i++){
+          user_info.playlist.push({
+          id: data[i].id,
+          title: data[i].title,
+          artist: data[i].artist,
+          cover: data[i].cover,
+          tracks: data[i].tracks
+        });          
+        }
+     
       });
 
 
@@ -84,8 +93,15 @@
 
       var user_info = {
 
+        right_click_obj:"",
+        current: {
+          playlist_id:0
+        },
         playlist: [],
 
+        del_track: function() {
+            player.playlist.del_track(user_info.right_click_obj);
+        },
         addPlaylist: function(album_id) {
 
           // 判斷是否已加入該id
@@ -111,8 +127,10 @@
                   tracks: data[i].tracks
                 });
 
+                // 紀錄現在播放清單編號
+                user_info.current.playlist_id = user_info.playlist.length-1;
                 // 切換回播放清單
-                user_info.changePlaylist(album_id, player);
+                user_info.changePlaylist(user_info.current.playlist_id, player);
               }
 
             }
@@ -125,7 +143,7 @@
         changePlaylist: function(album_id, player) {
           ui_info.atPlayList = true;
           ui_info.current_func = 'playlist';
-          player.playlist.change(album_id, player);
+          player.playlist.change(user_info.playlist[album_id], player);
         }
       }
 
@@ -194,33 +212,23 @@
       player.current.track = 0;
     }
 
-    playlist.change = function(album_id, player, $scope) {
+    playlist.del_track = function(track_id){
+        playlist[0].tracks.splice(track_id, 1);
+    }
+
+    playlist.change = function(data, player, $scope) {
+
+      playlist[0] = data;
+      playlist.reset();
+      current.album = data.id;
+      player.notice = "1. double click song name to change this music <br>" +
+        "2. drap & drop to sort playlist and song";
 
 
-
-      $http.get('api/search_data.json').success(function(data) {
-
-        for (var i = 0; i < data.length; i++) {
-          if (album_id == data[i].id) {
-            playlist[0] = data[i];
-            playlist.reset();
-            current.album = album_id;
-            player.notice = "1. double click song name to change this music <br>" +
-              "2. drap & drop to sort playlist and song";
-
-            console.log(playlist);
-            // 將歌曲帶給 jplayer
-            $('#kkbox_player').jPlayer("setMedia", {
-              mp3: playlist[0].tracks[current.track].url
-            });
-
-          }
-
-        }
-
+      // 將歌曲帶給 jplayer
+      $('#kkbox_player').jPlayer("setMedia", {
+        mp3: playlist[0].tracks[current.track].url
       });
-
-
 
       //console.log(player.current.album);
 
@@ -356,34 +364,75 @@
     }
   ]);
 
-  WebClientApp.directive('contextMenu', ['$http', '$compile',
-    function($http, $compile) {
-      return {
-        restrict: 'A',
-        link: function(scope, element, attrs) {
-            console.log(element);
-            element.contextMenu("rightClickMenu", {
 
-              bindings: {
+  WebClientApp.directive('context', ['user_info', function(user_info) {
+    return {
+      restrict    : 'A',
+      scope       : '@&', 
+      compile: function compile(tElement, tAttrs, transclude) {
 
-                'open': function(t) {
 
-                  alert('Trigger was '+t.id+'\nAction was Open');
+        return {
+      
+          post: function postLink(scope, iElement, iAttrs, controller) {
+            var ul = $('#' + iAttrs.context),
+                last = null;
+            
+            ul.css({ 'display' : 'none'});
+  
 
-                },
-                'delete': function(t) {
+        document.oncontextmenu = function (e) {
+         if(e.target.parentElement.hasAttribute('context')) {
+            return false;
+         }
 
-                  alert('Trigger was '+t.id+'\nAction was Delete');
+        };
 
-                }
+          iElement.bind('contextmenu',function(e){
+              
 
-              }
+              user_info.right_click_obj = iAttrs.trackid;
 
+              ul.css({
+                position: "absolute",
+                display: "block",
+                left: event.clientX + 'px',
+                top:  (event.clientY-25) + 'px'
+              });
+       
+          }) ;
+
+
+            
+
+            $(document).click(function(event) {
+
+                ul.css({
+                  'display' : 'none'
+                });
             });
-        }
-      };
+
+          }
+        };
+      }
+    };
+  }]);
+
+WebClientApp.directive('rightClick',function(){
+
+    document.oncontextmenu = function (e) {
+       if(e.target.hasAttribute('right-click')) {
+           return false;
+       }
+    };
+
+    return function(scope,el,attrs){
+        el.bind('contextmenu',function(e){
+            
+            
+        }) ;
     }
-  ]);  
+}); 
 
 
 
