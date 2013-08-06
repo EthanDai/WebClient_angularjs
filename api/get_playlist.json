@@ -1,0 +1,56 @@
+[{
+    "id":"0001",
+    "title": "may i",
+    "artist": "star-01",
+    "cover": "cover/kkbox_cover.jpg",
+    "tracks": [{
+        "title": "Care",
+        "url": "music/blue.mp3"
+    },
+    {
+        "title": "Rope and Wood",
+        "url": "music/jazz.mp3"
+    },
+    {
+        "title": "Problem Solvent",
+        "url": "music/minimalish.mp3"
+    },
+    {
+        "title": "Unpaint My Skin",
+        "url": "music/slower.mp3"
+    }]    
+},
+{
+    "id":"0002",
+    "title": "color rad",
+    "artist": "star-02",
+    "cover": "cover/bootstrap-cover.png",
+    "tracks": [{
+        "title": "Care",
+        "url": "music/blue.mp3"
+    },
+    {
+        "title": "Rope and Wood",
+        "url": "music/jazz.mp3"
+    },
+    {
+        "title": "Problem Solvent",
+        "url": "music/minimalish.mp3"
+    },
+    {
+        "title": "Unpaint My Skin",
+        "url": "music/slower.mp3"
+    },
+    {
+        "title": "Nostalgia",
+        "url": "music/blue.mp3"
+    },
+    {
+        "title": "Interludum",
+        "url": "music/jazz.mp3"
+    },
+    {
+        "title": "Grind",
+        "url": "music/minimalish.mp3"
+    }]     
+}]

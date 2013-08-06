@@ -23,7 +23,7 @@
 		stopChildrenPropagation: true, //prevent propagation on popover children
 		hideOnHTMLClick: true, //hides the popover when clicked outside of it
 		animateChange: true, //animate a popover reposition
-		autoReposition: true, //automatically reposition popover on popover change and window resize
+		autoReposition: false, //automatically reposition popover on popover change and window resize
 		anchor: false //anchor the popover to a different element
 	}
 	var popovers = [];

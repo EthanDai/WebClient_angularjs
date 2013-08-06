@@ -1,6 +1,13 @@
 <div class="row-fluid" ng-controller="SearchCtrl">
       <form class="form-search" name="searchForm">
-           <legend><input type="text" class="input-medium search-query" ng-model="search.title"></legend>
+ 
+            <div class="input-prepend">
+              <span class="add-on"><i class="icon-search"></i></span>
+              <input type="text" class="input-medium search-query" ng-model="search.title">
+            </div>
+            
+            <hr>
+
             <table class="table table-striped table-bordered table-bordered table-hover">
               <thead>
                 <tr>
@@ -14,5 +21,4 @@
               </tbody>
             </table>  
       </form>
-      
 </div>

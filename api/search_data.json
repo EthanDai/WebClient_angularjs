@@ -68,7 +68,7 @@
     "id":"0004",
     "title": "mood",
     "artist": "star-01",
-    "cover": "cover/bootstrap.jpg",
+    "cover": "cover/bootstrap-cover.png",
     "tracks": [{
         "title": "Care",
         "url": "music/blue.mp3"
@@ -116,7 +116,7 @@
     "id":"0006",
     "title": "may",
     "artist": "star-03",
-    "cover": "cover/bootstrap.jpg",
+    "cover": "cover/bootstrap-cover.png",
     "tracks": [{
         "title": "Care",
         "url": "music/blue.mp3"
@@ -196,7 +196,7 @@
     "id":"0008",
     "title": "dex",
     "artist": "star-02",
-    "cover": "cover/bootstrap.jpg",
+    "cover": "cover/bootstrap-cover.png",
     "tracks": [{
         "title": "Care",
         "url": "music/blue.mp3"
@@ -276,7 +276,7 @@
     "id":"0010",
     "title": "ddlike",
     "artist": "star-01",
-    "cover": "cover/bootstrap.jpg",
+    "cover": "cover/bootstrap-cover.png",
     "tracks": [{
         "title": "Care",
         "url": "music/blue.mp3"
