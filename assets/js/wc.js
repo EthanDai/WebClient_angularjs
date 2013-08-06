@@ -342,11 +342,48 @@
 
             });
 
+            // click popover outside to hide popover
+            $(document).click(function(event) {
+              var target = $(event.target);
+              if(!target.is(".popover") && !target.parents().is(".popover") && !target.is(element)) {
+                  element.popover('hide');
+              }
+            });
+
           });
         }
       };
     }
   ]);
+
+  WebClientApp.directive('contextMenu', ['$http', '$compile',
+    function($http, $compile) {
+      return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+            console.log(element);
+            element.contextMenu("rightClickMenu", {
+
+              bindings: {
+
+                'open': function(t) {
+
+                  alert('Trigger was '+t.id+'\nAction was Open');
+
+                },
+                'delete': function(t) {
+
+                  alert('Trigger was '+t.id+'\nAction was Delete');
+
+                }
+
+              }
+
+            });
+        }
+      };
+    }
+  ]);  
 
 
 
