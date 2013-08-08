@@ -125,7 +125,8 @@ $(document).ready(function() {
                            $('#page'+page_info.next_id).animate({
                               left: "+="+(base.move_dis-base.show_width)
                             }, base.speed, function() {
-                                 $('#page'+page_info.next_id).remove();                                                  
+                                 $('#page'+page_info.next_id).remove();   
+                                 base.reset_mask();                                                
                             });
 
 
@@ -149,6 +150,15 @@ $(document).ready(function() {
           this.pages.push(page_info);
           this.current_idx++;
       },
+      add_mask : function(){
+
+        $("#"+base.pages[base.current_idx-2].name).css('opacity', '0.5');
+      },
+      reset_mask : function(){
+       
+        $("#"+base.pages[base.current_idx-1].name).css('opacity', '1');
+       
+      },      
       add_page : function(container){ // 新增一頁
 
         var page_info = {
@@ -176,13 +186,15 @@ $(document).ready(function() {
                                           // 有上一層才刪除
                                           if($('#page'+page_info.next_id).length>0)
                                           {
+                                            
                                             // 移除前一個
                                              $('#page'+page_info.next_id).animate({
                                                 left: "+="+(base.move_dis-base.show_width)
                                               }, base.speed, function() {
-                                                   $('#page'+page_info.next_id).remove();                                                  
+                                                   $('#page'+page_info.next_id).remove();
+                                                    base.reset_mask();                   
                                               });
-
+     
 
                                               base.pages.splice((base.current_idx-1),1); 
                                               base.current_idx --;
@@ -208,7 +220,6 @@ $(document).ready(function() {
         $(new_page).appendTo('#'+container);
         if(this.pages.length>1)
         {
-          console.log(page_info.name);
           $("#"+page_info.name).css('left', ((base.move_dis-base.show_width)+ (base.show_width*base.current_idx))+'px');
         }
           
@@ -231,7 +242,7 @@ $(document).ready(function() {
                     left: "-="+(base.move_dis-base.show_width),
                   }, base.speed, function() {
                   // Animation complete.
-                 
+                   base.add_mask();
                 });                
               }
 
@@ -245,8 +256,8 @@ $(document).ready(function() {
                 control_obj.animate({
                     left: "-="+(base.move_dis-base.show_width)
                   }, base.speed, function() {
-                  // Animation complete.
-                                 
+                    // Animation complete.
+                    base.add_mask();      
                 });
               }
               else{
@@ -254,8 +265,9 @@ $(document).ready(function() {
                  control_obj.css('left', base.show_width*i);
               } 
             }
-        }  
 
+        }  
+      
         if(base.pages.length>2)
         {
 
@@ -263,12 +275,11 @@ $(document).ready(function() {
           $("#"+container).animate({
               left: "-="+base.show_width,
             }, base.speed, function() {
-            // Animation complete.
-           
+             // Animation complete.
           });
          
         }
-
+        
         this.current_idx++;
       }
   }
