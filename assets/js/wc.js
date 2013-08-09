@@ -10,16 +10,16 @@
 
       // 讀取預設使用者播放清單
       $http.get('api/get_playlist.json').success(function(data) {
-        for(var i=0; i<data.length; i++){
+        for (var i = 0; i < data.length; i++) {
           user_info.playlist.push({
-          id: data[i].id,
-          title: data[i].title,
-          artist: data[i].artist,
-          cover: data[i].cover,
-          tracks: data[i].tracks
-        });          
+            id: data[i].id,
+            title: data[i].title,
+            artist: data[i].artist,
+            cover: data[i].cover,
+            tracks: data[i].tracks
+          });
         }
-     
+
       });
 
 
@@ -52,12 +52,17 @@
   ]);
 
   // Search Controller
-  WebClientApp.controller('SearchCtrl', ['$scope', '$http', 'album_info', 'ui_info',
-    function($scope, $http, album_info, ui_info) {
+  WebClientApp.controller('SearchCtrl', ['$scope', '$http', 'album_info', 'ui_info', '$compile', 'page_ui', 
+    function($scope, $http, album_info, ui_info, $compile, page_ui) {
 
       $http.get('api/search_data.json').success(function(data) {
         $scope.searchAlbums = data;
       });
+  
+
+
+      // 指定初始頁面
+      page_ui.add_main_page('main_div','main_page');
 
       $scope.showList = function(id) {
         ui_info.atPlayList = false;
@@ -70,6 +75,11 @@
             album_info.artist = $scope.searchAlbums[i].artist;
             album_info.cover = $scope.searchAlbums[i].cover;
             album_info.tracks = $scope.searchAlbums[i].tracks;
+
+            $.get("partials/album.html", function(data) {
+                page_ui.add_page('main_div', data);
+            });
+
             // 關閉 search popup
             $('#fun_search_btn').popover('hide');
 
@@ -93,14 +103,14 @@
 
       var user_info = {
 
-        right_click_obj:"",
+        right_click_obj: "",
         current: {
-          playlist_id:0
+          playlist_id: 0
         },
         playlist: [],
 
         del_track: function() {
-            player.playlist.del_track(user_info.right_click_obj);
+          player.playlist.del_track(user_info.right_click_obj);
         },
         addPlaylist: function(album_id) {
 
@@ -128,7 +138,7 @@
                 });
 
                 // 紀錄現在播放清單編號
-                user_info.current.playlist_id = user_info.playlist.length-1;
+                user_info.current.playlist_id = user_info.playlist.length - 1;
                 // 切換回播放清單
                 user_info.changePlaylist(user_info.current.playlist_id, player);
               }
@@ -212,8 +222,8 @@
       player.current.track = 0;
     }
 
-    playlist.del_track = function(track_id){
-        playlist[0].tracks.splice(track_id, 1);
+    playlist.del_track = function(track_id) {
+      playlist[0].tracks.splice(track_id, 1);
     }
 
     playlist.change = function(data, player, $scope) {
@@ -353,8 +363,8 @@
             // click popover outside to hide popover
             $(document).click(function(event) {
               var target = $(event.target);
-              if(!target.is(".popover") && !target.parents().is(".popover") && !target.is(element)) {
-                  element.popover('hide');
+              if (!target.is(".popover") && !target.parents().is(".popover") && !target.is(element)) {
+                element.popover('hide');
               }
             });
 
@@ -365,75 +375,275 @@
   ]);
 
 
-  WebClientApp.directive('context', ['user_info', function(user_info) {
-    return {
-      restrict    : 'A',
-      scope       : '@&', 
-      compile: function compile(tElement, tAttrs, transclude) {
+  WebClientApp.directive('context', ['user_info',
+    function(user_info) {
+      return {
+        restrict: 'A',
+        scope: '@&',
+        compile: function compile(tElement, tAttrs, transclude) {
 
 
-        return {
-      
-          post: function postLink(scope, iElement, iAttrs, controller) {
-            var ul = $('#' + iAttrs.context),
+          return {
+
+            post: function postLink(scope, iElement, iAttrs, controller) {
+              var ul = $('#' + iAttrs.context),
                 last = null;
-            
-            ul.css({ 'display' : 'none'});
-  
-
-        document.oncontextmenu = function (e) {
-         if(e.target.parentElement.hasAttribute('context')) {
-            return false;
-         }
-
-        };
-
-          iElement.bind('contextmenu',function(e){
-              
-
-              user_info.right_click_obj = iAttrs.trackid;
 
               ul.css({
-                position: "absolute",
-                display: "block",
-                left: event.clientX + 'px',
-                top:  (event.clientY-25) + 'px'
+                'display': 'none'
               });
-       
-          }) ;
 
 
-            
+              document.oncontextmenu = function(e) {
+                if (e.target.parentElement.hasAttribute('context')) {
+                  return false;
+                }
 
-            $(document).click(function(event) {
+              };
+
+              iElement.bind('contextmenu', function(e) {
+
+
+                user_info.right_click_obj = iAttrs.trackid;
 
                 ul.css({
-                  'display' : 'none'
+                  position: "absolute",
+                  display: "block",
+                  left: event.clientX + 'px',
+                  top: (event.clientY - 25) + 'px'
                 });
-            });
 
-          }
-        };
+              });
+
+
+
+              $(document).click(function(event) {
+
+                ul.css({
+                  'display': 'none'
+                });
+              });
+
+            }
+          };
+        }
+      };
+    }
+  ]);
+
+  WebClientApp.directive('rightClick', function() {
+
+    document.oncontextmenu = function(e) {
+      if (e.target.hasAttribute('right-click')) {
+        return false;
       }
     };
-  }]);
 
-WebClientApp.directive('rightClick',function(){
+    return function(scope, el, attrs) {
+      el.bind('contextmenu', function(e) {
 
-    document.oncontextmenu = function (e) {
-       if(e.target.hasAttribute('right-click')) {
-           return false;
-       }
-    };
 
-    return function(scope,el,attrs){
-        el.bind('contextmenu',function(e){
-            
-            
-        }) ;
+      });
     }
-}); 
+  });
 
 
+  // 提供紀錄 ui 相關設定的 service
+  WebClientApp.factory('page_ui', ['$rootScope', '$http', '$compile', function($rootScope, $http, $compile) {
+
+      var page_ui = {
+          current_idx : 0,  // 目前控制的 page id
+          show_width: 350,  // 要露出的pre page 寬度
+          move_dis:1000,    // 新的page移動的距離，越大越順
+          speed:500,        // 每次移動要花的時間 1000 = 1 sec
+          pages: [],        // 所有page的基本資料array
+          add_main_page : function(container,name){
+
+              var page_info = {
+                  id :  page_ui.current_idx,
+                  name : name,
+                  top : 0,
+                  left : 0,
+                  next_id: (page_ui.current_idx+1)
+
+              }
+
+              $("#"+name).css('background-color', page_info.color)
+                         .css('position', 'absolute')
+                         .css('top', page_info.top+'px')
+                         .css('height', '800px')
+                         .click(function(){
+                            
+                            // 有上一層才刪除
+                            if($('#page'+page_info.next_id).length>0)
+                            {
+                              // 移除前一個
+                               $('#page'+page_info.next_id).animate({
+                                  left: "+="+(page_ui.move_dis-page_ui.show_width)
+                                }, page_ui.speed, function() {
+                                     page_ui.reset_mask(); 
+                                     $('#page'+page_info.next_id).remove();      
+
+                                });
+
+
+                                page_ui.pages.splice((page_ui.current_idx-1),1); 
+                                page_ui.current_idx --;
+
+                                if(page_ui.pages.length>1)
+                                {
+                                    // 位置設定完移動主框架
+                                    $("#"+container).animate({
+                                        left: "+="+page_ui.show_width,
+                                      }, page_ui.speed, function() {
+                                      // Animation complete.
+                                     
+                                    });                                                
+
+                                }
+                            }
+                         });                     
+
+              page_ui.pages.push(page_info);
+              page_ui.current_idx++;
+          },
+          add_mask : function(){
+
+            $("#"+page_ui.pages[page_ui.current_idx-2].name).css('opacity', '0.5');
+          },
+          reset_mask : function(){
+           
+            $("#"+page_ui.pages[page_ui.current_idx-1].name).css('opacity', '1');
+           
+          },      
+          add_page : function(container, html_page) { // 新增一頁
+
+            var page_info = {
+                id :  page_ui.current_idx,
+                name : 'page'+page_ui.current_idx,
+                top : 0,
+                left : 0,
+                next_id: (page_ui.current_idx+1)
+
+            }
+
+            var template_html = $.trim(html_page);
+            var compile_html = $compile(template_html)($rootScope);
+           
+            // 新增page
+            var new_page = $('<div></div>').attr("class", 'row-fluid')
+                                           .attr("id", page_info.name)
+                                           .css("padding-right", "250px")
+                                           .css('position', 'absolute')
+                                           .css('top', page_info.top+'px')
+                                           .css('background-color', 'white')
+                                           .css('height', '800px')
+                                           .click(function(){
+                                              
+                                              // 有上一層才刪除
+                                              if($('#page'+page_info.next_id).length>0)
+                                              {
+                                              
+                                                // 移除前一個
+                                                 $('#page'+page_info.next_id).animate({
+                                                    left: "+="+(page_ui.move_dis-page_ui.show_width)
+                                                  }, page_ui.speed, function() {
+                                                       $('#page'+page_info.next_id).remove();
+                                                        page_ui.reset_mask();
+
+                                                  });
+         
+
+                                                  page_ui.pages.splice((page_ui.current_idx-1),1); 
+
+                                                  page_ui.current_idx --;
+
+                                                  if(page_ui.pages.length>1)
+                                                  {
+                                                      // 位置設定完移動主框架
+                                                      $("#"+container).animate({
+                                                          left: "+="+page_ui.show_width,
+                                                        }, page_ui.speed, function() {
+                                                        // Animation complete.
+                                                       
+                                                      });                                                
+
+                                                  }
+                                              }
+                                           }).append(compile_html);
+
+            // 將新頁資訊紀錄
+
+            page_ui.pages.push(page_info);
+            $(new_page).appendTo('#'+container);
+
+            if(page_ui.pages.length>1){
+              $("#"+page_info.name).css('left', ((page_ui.move_dis-page_ui.show_width)+ (page_ui.show_width*page_ui.current_idx))+'px');
+            }
+
+            // 調整之前page位置
+            for(var i = 0; i < page_ui.pages.length; i++){
+
+                var control_obj = $("#"+page_ui.pages[i].name);
+
+
+                if(page_ui.pages.length==1)
+                {
+                  // 第一層不做移動，待有第三層出現時再行處理
+                }
+                else if(page_ui.pages.length==2)
+                {
+                  if(i==1)
+                  {
+                    // 有兩層時，第一層不移動，僅移動第2層
+                    control_obj.animate({
+                        left: "-="+(page_ui.move_dis-page_ui.show_width),
+                      }, page_ui.speed, function() {
+                      // Animation complete.
+                       page_ui.add_mask();
+                    });                
+                  }
+
+                }
+                else
+                {
+
+                  // 超過三層後，所有東西連動移動
+                  if(i==(page_ui.pages.length-1))
+                  {
+                   
+                    control_obj.animate({
+                        left: "-="+(page_ui.move_dis-page_ui.show_width)
+                      }, page_ui.speed, function() {
+                        // Animation complete.
+                        page_ui.add_mask();      
+                    });
+                  }
+                  else{
+                     // 看不到的 page直接到位，不做動畫移動
+                     control_obj.css('left', page_ui.show_width*i);
+                  } 
+                }
+
+            }  
+          
+            if(page_ui.pages.length>2)
+            {
+
+              // 位置設定完移動主框架
+              $("#"+container).animate({
+                  left: "-=700", //page_ui.show_width
+                }, page_ui.speed, function() {
+                 // Animation complete.
+              });
+             
+            }
+            
+            page_ui.current_idx++;
+          }
+      };
+
+      return page_ui;
+  }]);
 
 })(window);
