@@ -60,9 +60,10 @@
       });
   
 
-
-      // 指定初始頁面
-      page_ui.add_main_page('main_div','main_page');
+      if(page_ui.current_idx==0){
+         // 指定初始頁面
+        page_ui.add_main_page('main_div','main_page');       
+      }
 
       $scope.showList = function(id) {
         ui_info.atPlayList = false;
@@ -539,7 +540,6 @@
                                            .css('background-color', 'white')
                                            .css('height', '800px')
                                            .click(function(){
-                                              
                                               // 有上一層才刪除
                                               if($('#page'+page_info.next_id).length>0)
                                               {
@@ -589,6 +589,7 @@
 
                 if(page_ui.pages.length==1)
                 {
+
                   // 第一層不做移動，待有第三層出現時再行處理
                 }
                 else if(page_ui.pages.length==2)
@@ -632,7 +633,7 @@
 
               // 位置設定完移動主框架
               $("#"+container).animate({
-                  left: "-=700", //page_ui.show_width
+                  left: "-="+page_ui.show_width //700 or page_ui.show_width
                 }, page_ui.speed, function() {
                  // Animation complete.
               });
@@ -640,6 +641,7 @@
             }
             
             page_ui.current_idx++;
+            console.log(page_ui.current_idx);
           }
       };
 
