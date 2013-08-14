@@ -22,8 +22,8 @@
   WebClientApp.config(RouteConfig);
 
   // WebClinet controller 
-  WebClientApp.controller('WebClientCtrl', ['$scope', '$http', 'player', 'ui_info', 'album_info', 'user_info',
-    function($scope, $http, player, ui_info, album_info, user_info) {
+  WebClientApp.controller('WebClientCtrl', ['$scope', '$http', 'player', 'ui_info', 'album_info', 'user_info', 'page_ui',
+    function($scope, $http, player, ui_info, album_info, user_info, page_ui) {
 
       // 讀取預設使用者播放清單
       $http.get('api/get_playlist.json').success(function(data) {
@@ -56,6 +56,7 @@
         switch (func_name) {
           case 'playlist':
             ui_info.atPlayList = true;
+            page_ui.goto_main_page('main_div');
             //console.log('change ui_info.atPlayList:' + ui_info.atPlayList);
             break;
         }
@@ -497,7 +498,7 @@
       var page_ui = {
         current_idx: 0, // 目前控制的 page id
         show_width: 350, // 要露出的pre page 寬度
-        move_dis: 1000, // 新的page移動的距離，越大越順
+        move_dis: 2000, // 新的page移動的距離，越大越順
         speed: 500, // 每次移動要花的時間 1000 = 1 sec
         pages: [], // 所有page的基本資料array
         add_main_page: function(container, name) {
@@ -601,7 +602,7 @@
                   // 位置設定完移動主框架
                   $("#" + container).animate({
                     left: "+=" + page_ui.show_width,
-                  }, page_ui.speed, function() {
+                  }, page_ui.speed/2, function() {
                     // Animation complete.
 
                   });
@@ -613,7 +614,6 @@
 
 
           // 將新頁資訊紀錄
-
           page_ui.pages.push(page_info);
 
           $(new_page).appendTo('#' + container);
@@ -672,7 +672,7 @@
             // 位置設定完移動主框架
             $("#" + container).animate({
               left: "-=" + page_ui.show_width //700 or page_ui.show_width
-            }, page_ui.speed, function() {
+            }, page_ui.speed/2, function() {
               // Animation complete.
             });
 
