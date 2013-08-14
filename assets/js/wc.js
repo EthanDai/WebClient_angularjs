@@ -615,11 +615,12 @@
           // 將新頁資訊紀錄
 
           page_ui.pages.push(page_info);
-          $(new_page).appendTo('#' + container);
 
+          $(new_page).appendTo('#' + container);
           $('#'+page_info.name+" #addBtn").click(function(){
 
             user_info.addPlaylist(album_id);
+            page_ui.goto_main_page(container);
             //alert(page_info.name);
           });
 
@@ -679,6 +680,29 @@
 
           page_ui.current_idx++;
           //console.log(page_ui.current_idx);
+        },
+        goto_main_page: function(container) { // 刪除所有分頁，顯示歌單頁
+
+            var total_length = page_ui.pages.length-2;
+             for(var i = (page_ui.pages.length-1); i > 0; i--){
+
+                  $('#page' + page_ui.pages[i].id).remove();
+                  page_ui.pages.splice((page_ui.current_idx - 1), 1);
+                  page_ui.current_idx--;
+                  page_ui.reset_mask();
+             }
+
+             if(total_length>0)
+             {
+                // 位置設定完移動主框架
+                $("#"+container).animate({
+                  left: "+=" + page_ui.show_width*total_length,
+                }, page_ui.speed, function() {
+                  // Animation complete.
+
+                });              
+             }
+
         }
       };
 
