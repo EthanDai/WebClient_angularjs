@@ -4,6 +4,23 @@
 
   var WebClientApp = angular.module('WebClientApp', ['ui']);
 
+
+
+  //Set up our mappings between URLs, tempaltes. and  controllers
+
+  function RouteConfig($routeProvider) {
+    $routeProvider.
+
+    // Notice that for the detail view, we specify a parameterized URL component by placing a colon in front of the id
+    when('/album/:album_id', {
+      controller: 'AlbumCtrl',
+      templateUrl: 'partials/album.html'
+    })
+  };
+
+  //Set up our route so the AMailservice can find it
+  WebClientApp.config(RouteConfig);
+
   // WebClinet controller 
   WebClientApp.controller('WebClientCtrl', ['$scope', '$http', 'player', 'ui_info', 'album_info', 'user_info',
     function($scope, $http, player, ui_info, album_info, user_info) {
@@ -39,7 +56,7 @@
         switch (func_name) {
           case 'playlist':
             ui_info.atPlayList = true;
-            console.log('change ui_info.atPlayList:' + ui_info.atPlayList);
+            //console.log('change ui_info.atPlayList:' + ui_info.atPlayList);
             break;
         }
 
@@ -52,43 +69,67 @@
   ]);
 
   // Search Controller
-  WebClientApp.controller('SearchCtrl', ['$scope', '$http', 'album_info', 'ui_info', '$compile', 'page_ui', 
+  WebClientApp.controller('SearchCtrl', ['$scope', '$http', 'album_info', 'ui_info', '$compile', 'page_ui',
     function($scope, $http, album_info, ui_info, $compile, page_ui) {
 
       $http.get('api/search_data.json').success(function(data) {
         $scope.searchAlbums = data;
       });
-  
 
-      if(page_ui.current_idx==0){
-         // 指定初始頁面
-        page_ui.add_main_page('main_div','main_page');       
+
+      if (page_ui.current_idx == 0) {
+        // 指定初始頁面
+        page_ui.add_main_page('main_div', 'main_page');
       }
 
       $scope.showList = function(id) {
+        
+
         ui_info.atPlayList = false;
         ui_info.current_func = 'search';
-        for (var i = 0; i < $scope.searchAlbums.length; i++) {
 
-          if (id == $scope.searchAlbums[i].id) {
-            album_info.id = $scope.searchAlbums[i].id;
-            album_info.title = $scope.searchAlbums[i].title;
-            album_info.artist = $scope.searchAlbums[i].artist;
-            album_info.cover = $scope.searchAlbums[i].cover;
-            album_info.tracks = $scope.searchAlbums[i].tracks;
 
-            $.get("partials/album.html", function(data) {
-                page_ui.add_page('main_div', data);
-            });
+        $.get("api/get_album.php?id=" + id, function(data) {
+            page_ui.add_page('main_div', data, id);
+        });
 
-            // 關閉 search popup
-            $('#fun_search_btn').popover('hide');
+        // 關閉 search popup
+        $('#fun_search_btn').popover('hide');
+
+        //$('.sliderLink').pageslide({ direction: 'left', href: 'partials/album_list.html'});
+      }
+
+    }
+  ]);
+
+  // Album Controller
+  WebClientApp.controller('AlbumCtrl', ['$scope', '$http', 'album_info', 'ui_info', '$compile', 'page_ui', '$routeParams',
+    function($scope, $http, album_info, ui_info, $compile, page_ui, $routeParams) {
+
+
+      $scope.searchAlbum = {};
+
+      $http.get('api/search_data.json').success(function(data) {
+
+        for (var i = 0; i < data.length; i++) {
+
+          if ($routeParams.album_id == data[i].id) {
+
+
+            $scope.searchAlbum.id = data[i].id;
+            $scope.searchAlbum.title = data[i].title;
+            $scope.searchAlbum.artist = data[i].artist;
+            $scope.searchAlbum.cover = data[i].cover;
+            $scope.searchAlbum.tracks = data[i].tracks;
+
 
           }
         }
 
-        //$('.sliderLink').pageslide({ direction: 'left', href: 'partials/album_list.html'});
-      }
+
+      });
+
+
 
     }
   ]);
@@ -450,202 +491,199 @@
 
 
   // 提供紀錄 ui 相關設定的 service
-  WebClientApp.factory('page_ui', ['$rootScope', '$http', '$compile', function($rootScope, $http, $compile) {
+  WebClientApp.factory('page_ui', ['$rootScope', '$http', '$compile', 'user_info',
+    function($rootScope, $http, $compile, user_info) {
 
       var page_ui = {
-          current_idx : 0,  // 目前控制的 page id
-          show_width: 350,  // 要露出的pre page 寬度
-          move_dis:1000,    // 新的page移動的距離，越大越順
-          speed:500,        // 每次移動要花的時間 1000 = 1 sec
-          pages: [],        // 所有page的基本資料array
-          add_main_page : function(container,name){
+        current_idx: 0, // 目前控制的 page id
+        show_width: 350, // 要露出的pre page 寬度
+        move_dis: 1000, // 新的page移動的距離，越大越順
+        speed: 500, // 每次移動要花的時間 1000 = 1 sec
+        pages: [], // 所有page的基本資料array
+        add_main_page: function(container, name) {
 
-              var page_info = {
-                  id :  page_ui.current_idx,
-                  name : name,
-                  top : 0,
-                  left : 0,
-                  next_id: (page_ui.current_idx+1)
+          var page_info = {
+            id: page_ui.current_idx,
+            name: name,
+            top: 0,
+            left: 0,
+            next_id: (page_ui.current_idx + 1)
 
+          }
+
+          $("#" + name).css('background-color', page_info.color)
+            .css('position', 'absolute')
+            .css('top', page_info.top + 'px')
+            .css('height', '800px')
+            .click(function() {
+
+              // 有上一層才刪除
+              if ($('#page' + page_info.next_id).length > 0) {
+                // 移除前一個
+                $('#page' + page_info.next_id).animate({
+                  left: "+=" + (page_ui.move_dis - page_ui.show_width)
+                }, page_ui.speed, function() {
+                  page_ui.reset_mask();
+                  $('#page' + page_info.next_id).remove();
+
+                });
+
+
+                page_ui.pages.splice((page_ui.current_idx - 1), 1);
+                page_ui.current_idx--;
+
+                if (page_ui.pages.length > 1) {
+                  // 位置設定完移動主框架
+                  $("#" + container).animate({
+                    left: "+=" + page_ui.show_width,
+                  }, page_ui.speed, function() {
+                    // Animation complete.
+
+                  });
+
+                }
+              }
+            });
+
+          page_ui.pages.push(page_info);
+          page_ui.current_idx++;
+        },
+        add_mask: function() {
+
+          $("#" + page_ui.pages[page_ui.current_idx - 2].name).css('opacity', '0.5');
+        },
+        reset_mask: function() {
+
+          $("#" + page_ui.pages[page_ui.current_idx - 1].name).css('opacity', '1');
+
+        },
+        add_page: function(container, html_page, album_id) { // 新增一頁
+
+          var page_info = {
+            id: page_ui.current_idx,
+            name: 'page' + page_ui.current_idx,
+            top: 0,
+            left: 0,
+            next_id: (page_ui.current_idx + 1)
+
+          }
+
+          var template_html = $.trim(html_page);
+          var compile_html = $compile(template_html)($rootScope);
+
+          // 新增page
+          var new_page = $('<div></div>').attr("class", 'row-fluid')
+            .attr("id", page_info.name)
+            .css("padding-right", "250px")
+            .css('position', 'absolute')
+            .css('top', page_info.top + 'px')
+            .css('background-color', 'white')
+            .css('height', '800px')
+            .click(function() {
+              // 有上一層才刪除
+              if ($('#page' + page_info.next_id).length > 0) {
+
+                // 移除前一個
+                $('#page' + page_info.next_id).animate({
+                  left: "+=" + (page_ui.move_dis - page_ui.show_width)
+                }, page_ui.speed, function() {
+                  $('#page' + page_info.next_id).remove();
+                  page_ui.reset_mask();
+
+                });
+
+
+                page_ui.pages.splice((page_ui.current_idx - 1), 1);
+
+                page_ui.current_idx--;
+
+                if (page_ui.pages.length > 1) {
+                  // 位置設定完移動主框架
+                  $("#" + container).animate({
+                    left: "+=" + page_ui.show_width,
+                  }, page_ui.speed, function() {
+                    // Animation complete.
+
+                  });
+
+                }
+              }
+            }).append(compile_html);
+
+
+
+          // 將新頁資訊紀錄
+
+          page_ui.pages.push(page_info);
+          $(new_page).appendTo('#' + container);
+
+          $('#'+page_info.name+" #addBtn").click(function(){
+
+            user_info.addPlaylist(album_id);
+            //alert(page_info.name);
+          });
+
+          if (page_ui.pages.length > 1) {
+            $("#" + page_info.name).css('left', ((page_ui.move_dis - page_ui.show_width) + (page_ui.show_width * page_ui.current_idx)) + 'px');
+          }
+
+          // 調整之前page位置
+          for (var i = 0; i < page_ui.pages.length; i++) {
+
+            var control_obj = $("#" + page_ui.pages[i].name);
+
+
+            if (page_ui.pages.length == 1) {
+
+              // 第一層不做移動，待有第三層出現時再行處理
+            } else if (page_ui.pages.length == 2) {
+              if (i == 1) {
+                // 有兩層時，第一層不移動，僅移動第2層
+                control_obj.animate({
+                  left: "-=" + (page_ui.move_dis - page_ui.show_width),
+                }, page_ui.speed, function() {
+                  // Animation complete.
+                  page_ui.add_mask();
+                });
               }
 
-              $("#"+name).css('background-color', page_info.color)
-                         .css('position', 'absolute')
-                         .css('top', page_info.top+'px')
-                         .css('height', '800px')
-                         .click(function(){
-                            
-                            // 有上一層才刪除
-                            if($('#page'+page_info.next_id).length>0)
-                            {
-                              // 移除前一個
-                               $('#page'+page_info.next_id).animate({
-                                  left: "+="+(page_ui.move_dis-page_ui.show_width)
-                                }, page_ui.speed, function() {
-                                     page_ui.reset_mask(); 
-                                     $('#page'+page_info.next_id).remove();      
+            } else {
 
-                                });
+              // 超過三層後，所有東西連動移動
+              if (i == (page_ui.pages.length - 1)) {
 
-
-                                page_ui.pages.splice((page_ui.current_idx-1),1); 
-                                page_ui.current_idx --;
-
-                                if(page_ui.pages.length>1)
-                                {
-                                    // 位置設定完移動主框架
-                                    $("#"+container).animate({
-                                        left: "+="+page_ui.show_width,
-                                      }, page_ui.speed, function() {
-                                      // Animation complete.
-                                     
-                                    });                                                
-
-                                }
-                            }
-                         });                     
-
-              page_ui.pages.push(page_info);
-              page_ui.current_idx++;
-          },
-          add_mask : function(){
-
-            $("#"+page_ui.pages[page_ui.current_idx-2].name).css('opacity', '0.5');
-          },
-          reset_mask : function(){
-           
-            $("#"+page_ui.pages[page_ui.current_idx-1].name).css('opacity', '1');
-           
-          },      
-          add_page : function(container, html_page) { // 新增一頁
-
-            var page_info = {
-                id :  page_ui.current_idx,
-                name : 'page'+page_ui.current_idx,
-                top : 0,
-                left : 0,
-                next_id: (page_ui.current_idx+1)
-
-            }
-
-            var template_html = $.trim(html_page);
-            var compile_html = $compile(template_html)($rootScope);
-           
-            // 新增page
-            var new_page = $('<div></div>').attr("class", 'row-fluid')
-                                           .attr("id", page_info.name)
-                                           .css("padding-right", "250px")
-                                           .css('position', 'absolute')
-                                           .css('top', page_info.top+'px')
-                                           .css('background-color', 'white')
-                                           .css('height', '800px')
-                                           .click(function(){
-                                              // 有上一層才刪除
-                                              if($('#page'+page_info.next_id).length>0)
-                                              {
-                                              
-                                                // 移除前一個
-                                                 $('#page'+page_info.next_id).animate({
-                                                    left: "+="+(page_ui.move_dis-page_ui.show_width)
-                                                  }, page_ui.speed, function() {
-                                                       $('#page'+page_info.next_id).remove();
-                                                        page_ui.reset_mask();
-
-                                                  });
-         
-
-                                                  page_ui.pages.splice((page_ui.current_idx-1),1); 
-
-                                                  page_ui.current_idx --;
-
-                                                  if(page_ui.pages.length>1)
-                                                  {
-                                                      // 位置設定完移動主框架
-                                                      $("#"+container).animate({
-                                                          left: "+="+page_ui.show_width,
-                                                        }, page_ui.speed, function() {
-                                                        // Animation complete.
-                                                       
-                                                      });                                                
-
-                                                  }
-                                              }
-                                           }).append(compile_html);
-
-            // 將新頁資訊紀錄
-
-            page_ui.pages.push(page_info);
-            $(new_page).appendTo('#'+container);
-
-            if(page_ui.pages.length>1){
-              $("#"+page_info.name).css('left', ((page_ui.move_dis-page_ui.show_width)+ (page_ui.show_width*page_ui.current_idx))+'px');
-            }
-
-            // 調整之前page位置
-            for(var i = 0; i < page_ui.pages.length; i++){
-
-                var control_obj = $("#"+page_ui.pages[i].name);
-
-
-                if(page_ui.pages.length==1)
-                {
-
-                  // 第一層不做移動，待有第三層出現時再行處理
-                }
-                else if(page_ui.pages.length==2)
-                {
-                  if(i==1)
-                  {
-                    // 有兩層時，第一層不移動，僅移動第2層
-                    control_obj.animate({
-                        left: "-="+(page_ui.move_dis-page_ui.show_width),
-                      }, page_ui.speed, function() {
-                      // Animation complete.
-                       page_ui.add_mask();
-                    });                
-                  }
-
-                }
-                else
-                {
-
-                  // 超過三層後，所有東西連動移動
-                  if(i==(page_ui.pages.length-1))
-                  {
-                   
-                    control_obj.animate({
-                        left: "-="+(page_ui.move_dis-page_ui.show_width)
-                      }, page_ui.speed, function() {
-                        // Animation complete.
-                        page_ui.add_mask();      
-                    });
-                  }
-                  else{
-                     // 看不到的 page直接到位，不做動畫移動
-                     control_obj.css('left', page_ui.show_width*i);
-                  } 
-                }
-
-            }  
-          
-            if(page_ui.pages.length>2)
-            {
-
-              // 位置設定完移動主框架
-              $("#"+container).animate({
-                  left: "-="+page_ui.show_width //700 or page_ui.show_width
+                control_obj.animate({
+                  left: "-=" + (page_ui.move_dis - page_ui.show_width)
                 }, page_ui.speed, function() {
-                 // Animation complete.
-              });
-             
+                  // Animation complete.
+                  page_ui.add_mask();
+                });
+              } else {
+                // 看不到的 page直接到位，不做動畫移動
+                control_obj.css('left', page_ui.show_width * i);
+              }
             }
-            
-            page_ui.current_idx++;
-            console.log(page_ui.current_idx);
+
           }
+
+          if (page_ui.pages.length > 2) {
+
+            // 位置設定完移動主框架
+            $("#" + container).animate({
+              left: "-=" + page_ui.show_width //700 or page_ui.show_width
+            }, page_ui.speed, function() {
+              // Animation complete.
+            });
+
+          }
+
+          page_ui.current_idx++;
+          //console.log(page_ui.current_idx);
+        }
       };
 
       return page_ui;
-  }]);
+    }
+  ]);
 
 })(window);
