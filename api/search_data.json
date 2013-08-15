@@ -4,18 +4,22 @@
     "artist": "star-01",
     "cover": "cover/kkbox_cover.jpg",
     "tracks": [{
+        "id":"12",
         "title": "Care",
         "url": "music/blue.mp3"
     },
     {
+        "id":"13",
         "title": "Rope and Wood",
         "url": "music/jazz.mp3"
     },
     {
+        "id":"14",
         "title": "Problem Solvent",
         "url": "music/minimalish.mp3"
     },
     {
+        "id":"15",
         "title": "Unpaint My Skin",
         "url": "music/slower.mp3"
     }]    
@@ -26,30 +30,37 @@
     "artist": "star-02",
     "cover": "cover/bootstrap-cover.png",
     "tracks": [{
+        "id":"16",
         "title": "Care",
         "url": "music/blue.mp3"
     },
     {
+        "id":"17",
         "title": "Rope and Wood",
         "url": "music/jazz.mp3"
     },
     {
+        "id":"18",
         "title": "Problem Solvent",
         "url": "music/minimalish.mp3"
     },
     {
+        "id":"19",
         "title": "Unpaint My Skin",
         "url": "music/slower.mp3"
     },
     {
+        "id":"20",
         "title": "Nostalgia",
         "url": "music/blue.mp3"
     },
     {
+        "id":"21",
         "title": "Interludum",
         "url": "music/jazz.mp3"
     },
     {
+        "id":"22",
         "title": "Grind",
         "url": "music/minimalish.mp3"
     }]     
@@ -60,6 +71,7 @@
     "artist": "star-03",
     "cover": "cover/kkbox_cover.jpg",
     "tracks": [{
+        "id":"23",
         "title": "Care",
         "url": "music/blue.mp3"
     }]     
@@ -70,14 +82,17 @@
     "artist": "star-01",
     "cover": "cover/bootstrap-cover.png",
     "tracks": [{
+        "id":"24",
         "title": "Care",
         "url": "music/blue.mp3"
     },
     {
+        "id":"25",
         "title": "Rope and Wood",
         "url": "music/jazz.mp3"
     },
     {
+        "id":"26",
         "title": "Problem Solvent",
         "url": "music/minimalish.mp3"
     }]     
@@ -88,26 +103,32 @@
     "artist": "star-02",
     "cover": "cover/kkbox_cover.jpg",
     "tracks": [{
+        "id":"27",
         "title": "Care",
         "url": "music/blue.mp3"
     },
     {
+        "id":"28",
         "title": "Rope and Wood",
         "url": "music/jazz.mp3"
     },
     {
+        "id":"29",
         "title": "Problem Solvent",
         "url": "music/minimalish.mp3"
     },
     {
+        "id":"30",
         "title": "Unpaint My Skin",
         "url": "music/slower.mp3"
     },
     {
+        "id":"31",
         "title": "Nostalgia",
         "url": "music/blue.mp3"
     },
     {
+        "id":"32",
         "title": "Tunnel At The End Of Light",
         "url": "music/minimalish.mp3"
     }]     
@@ -118,34 +139,42 @@
     "artist": "star-03",
     "cover": "cover/bootstrap-cover.png",
     "tracks": [{
+        "id":"33",
         "title": "Care",
         "url": "music/blue.mp3"
     },
     {
+        "id":"34",
         "title": "Nostalgia",
         "url": "music/blue.mp3"
     },
     {
+        "id":"35",
         "title": "Interludum",
         "url": "music/jazz.mp3"
     },
     {
+        "id":"36",
         "title": "Grind",
         "url": "music/minimalish.mp3"
     },
     {
+        "id":"37",
         "title": "Diagrams",
         "url": "music/slower.mp3"
     },
     {
+        "id":"38",
         "title": "Hare",
         "url": "music/blue.mp3"
     },
     {
+        "id":"39",
         "title": "Carefree",
         "url": "music/jazz.mp3"
     },
     {
+        "id":"40",
         "title": "Tunnel At The End Of Light",
         "url": "music/minimalish.mp3"
     }]     
@@ -156,38 +185,47 @@
     "artist": "star-01",
     "cover": "cover/kkbox_cover.jpg",
     "tracks": [{
+        "id":"41",
         "title": "Problem Solvent",
         "url": "music/minimalish.mp3"
     },
     {
+        "id":"42",
         "title": "Unpaint My Skin",
         "url": "music/slower.mp3"
     },
     {
+        "id":"43",
         "title": "Nostalgia",
         "url": "music/blue.mp3"
     },
     {
+        "id":"44",
         "title": "Interludum",
         "url": "music/jazz.mp3"
     },
     {
+        "id":"45",
         "title": "Grind",
         "url": "music/minimalish.mp3"
     },
     {
+        "id":"46",
         "title": "Diagrams",
         "url": "music/slower.mp3"
     },
     {
+        "id":"47",
         "title": "Hare",
         "url": "music/blue.mp3"
     },
     {
+        "id":"48",
         "title": "Carefree",
         "url": "music/jazz.mp3"
     },
     {
+        "id":"49",
         "title": "Tunnel At The End Of Light",
         "url": "music/minimalish.mp3"
     }]     
@@ -198,46 +236,57 @@
     "artist": "star-02",
     "cover": "cover/bootstrap-cover.png",
     "tracks": [{
+        "id":"50",
         "title": "Care",
         "url": "music/blue.mp3"
     },
     {
+        "id":"51",
         "title": "Rope and Wood",
         "url": "music/jazz.mp3"
     },
     {
+        "id":"52",
         "title": "Problem Solvent",
         "url": "music/minimalish.mp3"
     },
     {
+        "id":"53",
         "title": "Unpaint My Skin",
         "url": "music/slower.mp3"
     },
     {
+        "id":"54",
         "title": "Nostalgia",
         "url": "music/blue.mp3"
     },
     {
+        "id":"55",
         "title": "Interludum",
         "url": "music/jazz.mp3"
     },
     {
+        "id":"56",
         "title": "Grind",
         "url": "music/minimalish.mp3"
     },
     {
+        "id":"57",
         "title": "Diagrams",
         "url": "music/slower.mp3"
     },
     {
+        "id":"58",
         "title": "Hare",
         "url": "music/blue.mp3"
     },
     {
+        "id":"59",
         "title": "Carefree",
         "url": "music/jazz.mp3"
     },
     {
+        "id":"60",
         "title": "Tunnel At The End Of Light",
         "url": "music/minimalish.mp3"
     }]     
@@ -248,26 +297,32 @@
     "artist": "star-03",
     "cover": "cover/kkbox_cover.jpg",
     "tracks": [{
+        "id":"61",
         "title": "Care",
         "url": "music/blue.mp3"
     },
     {
+        "id":"62",
         "title": "Rope and Wood",
         "url": "music/jazz.mp3"
     },
     {
+        "id":"63",
         "title": "Problem Solvent",
         "url": "music/minimalish.mp3"
     },
     {
+        "id":"64",
         "title": "Unpaint My Skin",
         "url": "music/slower.mp3"
     },
     {
+        "id":"65",
         "title": "Hare",
         "url": "music/blue.mp3"
     },
     {
+        "id":"66",
         "title": "Carefree",
         "url": "music/jazz.mp3"
     }]     
@@ -278,14 +333,17 @@
     "artist": "star-01",
     "cover": "cover/bootstrap-cover.png",
     "tracks": [{
+        "id":"67",
         "title": "Care",
         "url": "music/blue.mp3"
     },
     {
+        "id":"68",
         "title": "Rope and Wood",
         "url": "music/jazz.mp3"
     },
     {
+        "id":"69",
         "title": "Tunnel At The End Of Light",
         "url": "music/minimalish.mp3"
     }]     

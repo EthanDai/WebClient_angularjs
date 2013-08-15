@@ -100,7 +100,7 @@
                     <img ng-src="{{player.playlist[0].cover}}" class="img-rounded">
                   </div>
                   <div class="span10 hero-unit">
-                    <h3 ng-bind="player.playlist[0].tracks[player.current.track].title"></h3>
+                    <h3 ng-bind="player.current.song.title"></h3>
                     <p ng-bind-html-unsafe="player.notice"></p>
                   </div>
               </div>
@@ -116,7 +116,7 @@
                     </tr>
                   </thead>
                   <tbody ui:sortable>
-                    <tr ng-repeat="track in player.playlist[0].tracks" ng-dblclick="player.play($index)" ng-class="{success: player.current.track == $index}" context="context1" trackid="{{$index}}">
+                    <tr ng-repeat="track in player.playlist[0].tracks" ng-dblclick="player.play($index)" ng-class="{success: player.current.song.id == track.id}" context="context1" trackid="{{$index}}">
                       <td ng-bind="$index+1"></td>
                       <td ng-bind="track.title"></td>
                     </tr>                              
@@ -152,12 +152,16 @@
             <div class="progress progress-striped active" id="seekBar" style="margin-bottom:5px; height:10px;">
                 <div class="bar" id="playBar"></div>
             </div> 
-            <a class="btn"  id="palyBtn"><i class="icon-play"></i></a>
-            <a class="btn"  id="pauseBtn"><i class="icon-pause"></i></a>
-            <a class="btn"  id="stopBtn"><i class="icon-stop"></i></a>
-            <a class="btn"  id="repeatBtn"><i class="icon-repeat"></i></a>
-            <a class="btn"  id="repeatOffBtn"><i class="icon-remove"></i></a>
+            <a class="btn"  id="palyBtn" title="播放"><i class="icon-play"></i></a>
+            <a class="btn"  id="pauseBtn" title="暫停"><i class="icon-pause"></i></a>
+            <a class="btn"  id="stopBtn" title="停止"><i class="icon-stop"></i></a>
+
+            <a class="btn" id="repeatBtn" title="單曲重複播放"><i class="icon-repeat"></i></a>
+            <a class="btn" id="repeatListBtn" title="歌單重複播放"><i class="icon-retweet"></i></a>
+            <a class="btn" id="noRepeatBtn" title="不重複播放"><i class="icon-remove"></i></a>
             
+            <a class="btn" id="shuffleBtn" title="隨機播放播放"><i class="icon-random"></i></a>
+            <a class="btn" id="normalBtn" title="一般播放"><i class="icon-arrow-right"></i></a>
 
         </div>
 

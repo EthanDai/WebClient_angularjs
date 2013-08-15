@@ -4,8 +4,6 @@
 
   var WebClientApp = angular.module('WebClientApp', ['ui']);
 
-
-
   //Set up our mappings between URLs, tempaltes. and  controllers
 
   function RouteConfig($routeProvider) {
@@ -33,11 +31,14 @@
             title: data[i].title,
             artist: data[i].artist,
             cover: data[i].cover,
-            tracks: data[i].tracks
+            tracks: data[i].tracks,
+            shuffle_tracks: user_info.shufflePlayList(data[i].tracks)
           });
+          console.log(data[i]);
         }
-
       });
+
+      
 
 
       $scope.player = player;
@@ -46,9 +47,11 @@
       $scope.user_info = user_info;
       player.notice = "choose your playlist...";
 
+      /*
       var updatePlayer = function() {
         $scope.player = player;
       }
+      */
 
       // 切換主 function 要做的事
       $scope.switchFunc = function(func_name) {
@@ -66,8 +69,7 @@
       }
 
 
-    }
-  ]);
+}]);
 
   // Search Controller
   WebClientApp.controller('SearchCtrl', ['$scope', '$http', 'album_info', 'ui_info', '$compile', 'page_ui',
@@ -99,38 +101,6 @@
 
         //$('.sliderLink').pageslide({ direction: 'left', href: 'partials/album_list.html'});
       }
-
-    }
-  ]);
-
-  // Album Controller
-  WebClientApp.controller('AlbumCtrl', ['$scope', '$http', 'album_info', 'ui_info', '$compile', 'page_ui', '$routeParams',
-    function($scope, $http, album_info, ui_info, $compile, page_ui, $routeParams) {
-
-
-      $scope.searchAlbum = {};
-
-      $http.get('api/search_data.json').success(function(data) {
-
-        for (var i = 0; i < data.length; i++) {
-
-          if ($routeParams.album_id == data[i].id) {
-
-
-            $scope.searchAlbum.id = data[i].id;
-            $scope.searchAlbum.title = data[i].title;
-            $scope.searchAlbum.artist = data[i].artist;
-            $scope.searchAlbum.cover = data[i].cover;
-            $scope.searchAlbum.tracks = data[i].tracks;
-
-
-          }
-        }
-
-
-      });
-
-
 
     }
   ]);
@@ -177,7 +147,8 @@
                   title: data[i].title,
                   artist: data[i].artist,
                   cover: data[i].cover,
-                  tracks: data[i].tracks
+                  tracks: data[i].tracks,
+                  shuffle_tracks: user_info.shufflePlayList(data[i].tracks)
                 });
 
                 // 紀錄現在播放清單編號
@@ -197,7 +168,16 @@
           ui_info.atPlayList = true;
           ui_info.current_func = 'playlist';
           player.playlist.change(user_info.playlist[album_id], player);
+        },
+        shufflePlayList: function(tracks){
+
+          var shffleTracks = tracks.slice(0);
+          // var shffleTracks = jQuery.extend(true, {}, tracks); //object deep clone
+          shffleTracks.sort(function(){return Math.random()>0.5?-1:1;});
+          //console.log(shffleTracks);
+          return shffleTracks;
         }
+
       }
 
       return user_info;
@@ -237,7 +217,10 @@
     var playlist = [];
     var current = {
       album: 0,
-      track: 0
+      track: 0,
+      song: {},
+      repeatMode: 0, // 0:no repeat, 1:song repeat, 2:playlist repeat
+      playMode: 0    // 0:normal, 1:random mode
     };
 
     player = {
@@ -254,6 +237,8 @@
 
         if (angular.isDefined(track)) current.track = track;
 
+        current.song = playlist[0].tracks[current.track];
+
         $('#kkbox_player').jPlayer("setMedia", {
           mp3: playlist[0].tracks[current.track].url
         }).jPlayer("play");
@@ -263,6 +248,8 @@
     playlist.reset = function() {
       player.current.album = 0;
       player.current.track = 0;
+      player.current.song ={};
+
     }
 
     playlist.del_track = function(track_id) {
@@ -274,8 +261,11 @@
       playlist[0] = data;
       playlist.reset();
       current.album = data.id;
+      current.song = playlist[0].tracks[current.track];
+
       player.notice = "1. double click song name to change this music <br>" +
         "2. drap & drop to sort playlist and song";
+
 
 
       // 將歌曲帶給 jplayer
@@ -297,7 +287,9 @@
         restrict: 'A',
         template: '<div id="kkbox_player"></div>',
         link: function(scope, element, attrs) {
+          
           var playerObj = element.children('div')
+
 
           var updatePlayer = function() {
 
@@ -323,12 +315,44 @@
                 volumeMax: "#volumMaxBtn",
                 currentTime: "#currentTime",
                 duration: "#duration",
-                repeat: "#repeatBtn",
-                repeatOff: "#repeatOffBtn",
+                repeat: "#repeatBtn",       // 不使用，不符合需求，另刻
+                repeatOff: "#repeatOffBtn",  // 不使用，不符合需求，另刻
                 noSolution: ".jp-no-solution"
               },
               ready: function() {
 
+                // 播放模式
+                switch(player.current.playMode){
+                  case 1:
+                    $("#shuffleBtn").show();
+                    $("#normalBtn").hide();
+                    break;
+                  default:
+                    $("#shuffleBtn").hide();
+                    $("#normalBtn").show();  
+                    break;              
+                }
+
+                // 循環模式
+                switch(player.current.repeatMode){
+                  case 1:
+                    $("#noRepeatBtn").hide();
+                    $("#repeatBtn").show();
+                    $("#repeatListBtn").hide();
+                    break;
+                  case 2:
+                    $("#noRepeatBtn").hide();
+                    $("#repeatBtn").hide();
+                    $("#repeatListBtn").show();
+                    break;                    
+                  default:
+                    $("#noRepeatBtn").show();
+                    $("#repeatBtn").hide();
+                    $("#repeatListBtn").hide(); 
+                    break;              
+                }
+
+               
               },
               play: function() {
                 if (attrs.pauseothers === 'true') {
@@ -343,20 +367,67 @@
               },
               ended: function(event) {
 
-                if (event.jPlayer.options.loop) {
+
+                if(1 == player.current.repeatMode){
                   playerObj.jPlayer("play");
-                } else {
+                }
+                else {
+
+                  var play_song_url = "";
+                  var play_status = "play";
+
                   if (!player.playlist.length) return;
 
-                  if (player.playlist[0].tracks.length > (player.current.track + 1)) {
-                    player.current.track++;
-                  } else {
-                    player.current.track = 0;
+                 
+                  if(player.current.playMode==1){ // 隨機模式
+
+                    if (player.playlist[0].tracks.length > (player.current.track + 1)) {  // 尚未播到最後一首
+
+                      player.current.track++;
+                     
+                    } else {
+
+                      player.current.track = 0;
+                      if(0 == player.current.repeatMode){
+                        play_status = "stop";
+                      }
+                    }
+                    
+                    play_song_url = player.playlist[0].shuffle_tracks[player.current.track].url;
+                    player.current.song = player.playlist[0].shuffle_tracks[player.current.track];
+
+                  }else{ // 一般模式
+ 
+                    if (player.playlist[0].tracks.length > (player.current.track + 1)) {  // 尚未播到最後一首
+                      player.current.track++;
+                    } else {
+                     
+                      player.current.track = 0;
+                      if(0 == player.current.repeatMode){
+                        play_status = "stop";
+                      }                       
+                    }
+
+                    play_song_url = player.playlist[0].tracks[player.current.track].url;
+                    player.current.song = player.playlist[0].tracks[player.current.track]
+
+                  }                  
+
+                 
+                  
+                  if("stop" == play_status){
+                       console.log(play_status + "," + player.current.repeatMode + "," + player.current.playMode);
+                      playerObj.jPlayer("setMedia", {
+                        mp3: play_song_url
+                      });
+
+                  }else{
+                      // 播放
+                      playerObj.jPlayer("setMedia", {
+                        mp3: play_song_url
+                      }).jPlayer(play_status);                  
                   }
 
-                  playerObj.jPlayer("setMedia", {
-                    mp3: player.playlist[0].tracks[player.current.track].url
-                  }).jPlayer("play");
 
                   scope.$apply(updatePlayer);
                 }
@@ -365,6 +436,55 @@
               }
             });
           };
+
+          // 切換為隨機模式
+          $("#normalBtn").click(function(){
+
+            player.current.playMode = 1;
+            $(this).hide();
+            $("#shuffleBtn").show();
+
+          });
+
+          // 切換為一般模式
+          $("#shuffleBtn").click(function(){
+
+             player.current.playMode = 0;
+            $(this).hide();
+            $("#normalBtn").show();
+
+          });
+
+          // 切換為單曲重復
+          $("#noRepeatBtn").click(function(){
+
+             player.current.repeatMode = 1;
+            $(this).hide();
+            $("#repeatBtn").show();
+            $("#repeatListBtn").hide();
+
+          });
+
+           // 切換為歌單重復
+          $("#repeatBtn").click(function(){
+
+             player.current.repeatMode = 2;
+            $(this).hide();
+            $("#noRepeatBtn").hide();
+            $("#repeatListBtn").show();
+
+          });         
+
+           // 切換為無重復
+          $("#repeatListBtn").click(function(){
+
+             player.current.repeatMode = 0
+            $(this).hide();
+            $("#noRepeatBtn").show();
+            $("#repeatBtn").hide();
+
+          });  
+
 
           //scope.$watch(attrs.audio, updatePlayer);
           updatePlayer();

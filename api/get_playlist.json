@@ -4,18 +4,22 @@
     "artist": "star-01",
     "cover": "cover/kkbox_cover.jpg",
     "tracks": [{
+        "id":"1",
         "title": "Care",
         "url": "music/blue.mp3"
     },
     {
+        "id":"2",
         "title": "Rope and Wood",
         "url": "music/jazz.mp3"
     },
     {
+        "id":"3",
         "title": "Problem Solvent",
         "url": "music/minimalish.mp3"
     },
     {
+        "id":"4",
         "title": "Unpaint My Skin",
         "url": "music/slower.mp3"
     }]    
@@ -26,30 +30,37 @@
     "artist": "star-02",
     "cover": "cover/bootstrap-cover.png",
     "tracks": [{
+        "id":"5",
         "title": "Care",
         "url": "music/blue.mp3"
     },
     {
+        "id":"6",
         "title": "Rope and Wood",
         "url": "music/jazz.mp3"
     },
     {
+        "id":"7",
         "title": "Problem Solvent",
         "url": "music/minimalish.mp3"
     },
     {
+        "id":"8",
         "title": "Unpaint My Skin",
         "url": "music/slower.mp3"
     },
     {
+        "id":"9",
         "title": "Nostalgia",
         "url": "music/blue.mp3"
     },
     {
+        "id":"10",
         "title": "Interludum",
         "url": "music/jazz.mp3"
     },
     {
+        "id":"11",
         "title": "Grind",
         "url": "music/minimalish.mp3"
     }]     
