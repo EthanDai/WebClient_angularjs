@@ -182,6 +182,61 @@
       return user_info;
     }
   ]);
+  
+  // 歌詞 service
+  WebClientApp.factory('lyrics', function($rootScope, $http) {
+
+    var lyrics_info = {
+      container:'lyrics_div',
+      container_height:200,
+      lyrics_data:[],
+      load_data: function(song_id){
+        $http.get('api/get_lyrics.json').success(function(data) {
+
+            lyrics_info.lyrics_data = data.lyrics;
+
+            lyrics_info.clear_lyrics_content(lyrics_info.container);
+            lyrics_info.create_lyrics_content(lyrics_info.container, lyrics_info.lyrics_data);
+        });
+      },
+      create_lyrics_content: function(container, lyrics_data){
+        for(var i=0; i<lyrics_data.length; i++){
+             $('#'+container).append('<li id="lyrics_'+i+'"><a>'+lyrics_data[i].content+'</a></li>');
+        }
+        $('#lyrics_div').scrollTop(0);
+       
+      },
+      clear_lyrics_content: function(container){
+        $('#'+container).html('');
+
+      },
+      hightline_lyrics: function(nowPlayTime){
+
+        var height = 0;
+
+        for(var i =0; i<lyrics_info.lyrics_data.length; i++){
+         
+          height += $("#lyrics_"+i).height();
+
+          if(nowPlayTime >= lyrics_info.lyrics_data[i].start_time && nowPlayTime < lyrics_info.lyrics_data[i].end_time){  
+
+            $("#lyrics_"+i).attr("class", "active");
+            
+            // 調整 scroll 位置，避免highline歌詞看步道(讓歌詞顯示在中間)
+            $('#'+lyrics_info.container).scrollTop(height-(lyrics_info.container_height/2));
+            //$('#lyrics_div').scrollTo("#lyrics_"+i);
+
+              
+          }
+          else
+            $("#lyrics_"+i).attr("class", "");
+        }        
+      }
+
+    }
+
+    return lyrics_info;
+  });
 
   // 提供紀錄 ui 相關設定的 service
   WebClientApp.factory('ui_info', function($rootScope, $http) {
@@ -278,10 +333,10 @@
     return player;
   });
 
-
+  
   // jplayer jQuert Plugin directive
-  WebClientApp.directive('jplayer', ['player',
-    function(player) {
+  WebClientApp.directive('jplayer', ['player', '$http', 'lyrics', 
+    function(player, $http, lyrics) {
       return {
         restrict: 'A',
         template: '<div id="kkbox_player"></div>',
@@ -363,10 +418,27 @@
               stop: function() {
 
               },
+              canplay: function(){
+                // loading 歌詞
+                lyrics.load_data(player.current.song.id);
+              },
+              timeupdate: function(event){
+                
+                var now_mico_time = event.jPlayer.status.currentTime*1000;
+                lyrics.hightline_lyrics(now_mico_time);
+                /*
+                if (event.jPlayer.status.currentTime > 60) {
+                   $(this).jPlayer('stop');
+                }
+                */
+              },
               durationchange: function(){
-                console.log(play_status);
+                //console.log(play_status);
+                // 因為 stop 的動作無法在 ended 裡執行(jplayer官方的bug)
+                // 所以在每次換歌要播放前來判斷是否要循環
                 if("stop" == play_status)
-                  playerObj.jPlayer(play_status);        
+                  playerObj.jPlayer(play_status);
+
               },
               ended: function(event) {
 
