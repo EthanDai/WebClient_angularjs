@@ -34,7 +34,6 @@
             tracks: data[i].tracks,
             shuffle_tracks: user_info.shufflePlayList(data[i].tracks)
           });
-          console.log(data[i]);
         }
       });
 
@@ -220,7 +219,7 @@
       track: 0,
       song: {},
       repeatMode: 0, // 0:no repeat, 1:song repeat, 2:playlist repeat
-      playMode: 0    // 0:normal, 1:random mode
+      playMode: 0,   // 0:normal, 1:random mode
     };
 
     player = {
@@ -289,7 +288,7 @@
         link: function(scope, element, attrs) {
           
           var playerObj = element.children('div')
-
+          var play_status = "play";
 
           var updatePlayer = function() {
 
@@ -351,7 +350,6 @@
                     $("#repeatListBtn").hide(); 
                     break;              
                 }
-
                
               },
               play: function() {
@@ -365,8 +363,14 @@
               stop: function() {
 
               },
+              durationchange: function(){
+                console.log(play_status);
+                if("stop" == play_status)
+                  playerObj.jPlayer(play_status);        
+              },
               ended: function(event) {
 
+                play_status = "play";
 
                 if(1 == player.current.repeatMode){
                   playerObj.jPlayer("play");
@@ -374,7 +378,7 @@
                 else {
 
                   var play_song_url = "";
-                  var play_status = "play";
+                 
 
                   if (!player.playlist.length) return;
 
@@ -412,21 +416,11 @@
                     player.current.song = player.playlist[0].tracks[player.current.track]
 
                   }                  
-
-                 
-                  
-                  if("stop" == play_status){
-                       console.log(play_status + "," + player.current.repeatMode + "," + player.current.playMode);
-                      playerObj.jPlayer("setMedia", {
-                        mp3: play_song_url
-                      });
-
-                  }else{
-                      // 播放
-                      playerObj.jPlayer("setMedia", {
-                        mp3: play_song_url
-                      }).jPlayer(play_status);                  
-                  }
+    
+                  // 播放
+                  playerObj.jPlayer("setMedia", {
+                    mp3: play_song_url
+                  }).jPlayer(play_status);   
 
 
                   scope.$apply(updatePlayer);
@@ -478,7 +472,7 @@
            // 切換為無重復
           $("#repeatListBtn").click(function(){
 
-             player.current.repeatMode = 0
+            player.current.repeatMode = 0
             $(this).hide();
             $("#noRepeatBtn").show();
             $("#repeatBtn").hide();
